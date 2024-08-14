@@ -49,6 +49,10 @@ export default {
 
   methods: {
     async login() {
+      let token = localStorage.getItem("token");
+      if (token) {
+        this.$router.push("/");
+      }
       try {
         const result = await axios.post(
           "http://localhost:4000/api/v1/users/login",

@@ -101,6 +101,51 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 /*
+get unique user
+*/
+
+const userDetail = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+  const user = await User.findById(userId).select("-password -email");
+  return res.status(201).json(new ApiResponse(200, user, "user detail here"));
+});
+
+/*
+Update some detail of user
+*/
+
+const userUpdate = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+  const { name, profession, phone } = req.body;
+
+  if (
+    IsStringInvalid(name) ||
+    IsStringInvalid(phone) ||
+    IsStringInvalid(profession)
+  ) {
+    throw new ApiError(400, "All fields are required");
+  }
+
+  const user = await User.findByIdAndUpdate(userId, {
+    name,
+    profession,
+    phone,
+  }).select("-password -email");
+
+  return res.status(201).json(new ApiResponse(200, user, "user detail here"));
+});
+
+/*
+Delet user
+*/
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+  const user = await User.findByIdAndDelete(userId);
+  return res.status(201).json(new ApiResponse(200, {}, "user deleted here"));
+});
+
+/*
 get all user
 */
 
@@ -112,4 +157,11 @@ const allUsers = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, users, "All Users are here"));
 });
 
-export { registerUser, loginUser, allUsers };
+export {
+  registerUser,
+  loginUser,
+  allUsers,
+  userDetail,
+  deleteUser,
+  userUpdate,
+};

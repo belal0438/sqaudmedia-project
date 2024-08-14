@@ -3,6 +3,7 @@ import Login from "./components/Login.vue";
 import Movie from "./components/Movie.vue";
 import Comoanyinfo from "./components/Comoanyinfo.vue";
 import Registerdusers from "./components/Registerdusers.vue";
+import Updateuser from "./components/Updateuser.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -31,6 +32,11 @@ const routes = [
     name: "RegisteredUsers",
     component: Registerdusers,
     path: "/registered-users",
+  },
+  {
+    name: "Update",
+    component: Updateuser,
+    path: "/update/:id",
   },
 ];
 

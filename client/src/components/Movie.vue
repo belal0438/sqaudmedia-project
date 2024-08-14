@@ -38,6 +38,10 @@ export default {
     };
   },
   async created() {
+    let token = localStorage.getItem("token");
+    if (!token) {
+      this.$router.push("/login");
+    }
     try {
       const response = await axios.get("http://localhost:4000/api/v1/movies");
       this.movies = response.data.result || [];

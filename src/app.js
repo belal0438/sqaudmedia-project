@@ -12,7 +12,10 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16Kb" }));
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "POST, GET, PUT,DELETE, OPTIONS"
+  );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
@@ -25,6 +28,7 @@ import movieRouter from "./routes/movie.router.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/movies", movieRouter);
+
 connectDB()
   .then(() => {
     app.on("error", (error) => {
