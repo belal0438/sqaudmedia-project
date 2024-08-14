@@ -21,9 +21,10 @@ app.use((req, res, next) => {
 });
 
 import userRouter from "./routes/user.router.js";
+import movieRouter from "./routes/movie.router.js";
 
 app.use("/api/v1/users", userRouter);
-
+app.use("/api/v1/movies", movieRouter);
 connectDB()
   .then(() => {
     app.on("error", (error) => {

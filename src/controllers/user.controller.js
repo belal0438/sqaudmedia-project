@@ -100,4 +100,16 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 });
 
-export { registerUser, loginUser };
+/*
+get all user
+*/
+
+const allUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password -email");
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, users, "All Users are here"));
+});
+
+export { registerUser, loginUser, allUsers };
