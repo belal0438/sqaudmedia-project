@@ -83,6 +83,13 @@ export default {
     };
   },
 
+  async created() {
+    let token = localStorage.getItem("token");
+    if (token) {
+      this.$router.push("/");
+    }
+  },
+
   methods: {
     async RegisterUser() {
       try {

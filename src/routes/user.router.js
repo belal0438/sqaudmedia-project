@@ -8,18 +8,20 @@ import {
   userUpdate,
 } from "../controllers/user.controller.js";
 
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+
 const router = Router();
 
 router.route("/register").post(registerUser);
 
 router.route("/login").post(loginUser);
 
-router.route("/details").get(allUsers);
+router.route("/details").get(verifyJWT, allUsers);
 
-router.route("/:id").get(userDetail);
+router.route("/:id").get(verifyJWT, userDetail);
 
-router.route("/user/:id").put(userUpdate);
+router.route("/user/:id").put(verifyJWT, userUpdate);
 
-router.route("/delete/:id").delete(deleteUser);
+router.route("/delete/:id").delete(verifyJWT, deleteUser);
 
 export default router;

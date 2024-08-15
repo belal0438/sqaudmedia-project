@@ -23,9 +23,9 @@
           Delete
         </button>
       </td>
-      <div v-if="loading" class="loading">Loading movies...</div>
-      <div v-if="error" class="error">{{ error }}</div>
     </tr>
+    <div v-if="loading" class="loading">Loading movies...</div>
+    <div v-if="error" class="error">{{ error }}</div>
   </table>
 </template>
 
@@ -50,9 +50,16 @@ export default {
 
   methods: {
     async deteletUser(id) {
+      let token = localStorage.getItem("token");
+      if (!token) {
+        this.$router.push("/login");
+      }
       try {
         let result = await axios.delete(
-          `http://localhost:4000/api/v1/users/delete/${id}`
+          `http://localhost:4000/api/v1/users/delete/${id}`,
+          {
+            headers: { Authorization: token },
+          }
         );
         // console.log("deletresut>>", result);
         if (result.status == 201) {
@@ -72,7 +79,8 @@ export default {
       }
       try {
         let result = await axios.get(
-          "http://localhost:4000/api/v1/users/details"
+          "http://localhost:4000/api/v1/users/details",
+          { headers: { Authorization: token } }
         );
         this.Users = result.data.data;
         this.loading = false;
@@ -133,6 +141,7 @@ td {
 }
 
 .error {
+  width: 90%;
   color: red;
   text-align: center;
   font-size: 18px;

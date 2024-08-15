@@ -61,9 +61,16 @@ export default {
   },
 
   async created() {
+    let token = localStorage.getItem("token");
+    if (!token) {
+      this.$router.push("/login");
+    }
     try {
       const result = await axios.get(
-        `http://localhost:4000/api/v1/users/${this.$route.params.id}`
+        `http://localhost:4000/api/v1/users/${this.$route.params.id}`,
+        {
+          headers: { Authorization: token },
+        }
       );
       if (result.status == 201) {
         this.name = result.data.data.name;
@@ -80,6 +87,10 @@ export default {
 
   methods: {
     async updateResturent() {
+      let token = localStorage.getItem("token");
+      if (!token) {
+        this.$router.push("/login");
+      }
       try {
         let result = await axios.put(
           `http://localhost:4000/api/v1/users/user/${this.$route.params.id}`,
@@ -87,6 +98,9 @@ export default {
             name: this.name,
             profession: this.profession,
             phone: this.phone,
+          },
+          {
+            headers: { Authorization: token },
           }
         );
         if (result.status == 201) {
@@ -112,6 +126,7 @@ export default {
   background-color: aliceblue;
   border-radius: 8px;
   padding-bottom: 10px;
+  border-radius: 8px;
 }
 
 h1 {
@@ -161,6 +176,7 @@ button:hover {
 }
 
 .error {
+  width: 90%;
   color: red;
   margin-top: 10px;
 }

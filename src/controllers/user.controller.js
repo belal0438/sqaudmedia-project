@@ -107,6 +107,9 @@ get unique user
 const userDetail = asyncHandler(async (req, res) => {
   const userId = req.params.id;
   const user = await User.findById(userId).select("-password -email");
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
   return res.status(201).json(new ApiResponse(200, user, "user detail here"));
 });
 
@@ -132,6 +135,10 @@ const userUpdate = asyncHandler(async (req, res) => {
     phone,
   }).select("-password -email");
 
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
   return res.status(201).json(new ApiResponse(200, user, "user detail here"));
 });
 
@@ -141,7 +148,20 @@ Delet user
 
 const deleteUser = asyncHandler(async (req, res) => {
   const userId = req.params.id;
+  const authId = req.user._id;
+  // Convert both IDs to strings for comparison
+  if (authId.toString() === userId.toString()) {
+    throw new ApiError(
+      400,
+      "You cannot delete your own account while logged in."
+    );
+  }
   const user = await User.findByIdAndDelete(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
   return res.status(201).json(new ApiResponse(200, {}, "user deleted here"));
 });
 

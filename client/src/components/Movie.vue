@@ -43,7 +43,9 @@ export default {
       this.$router.push("/login");
     }
     try {
-      const response = await axios.get("http://localhost:4000/api/v1/movies");
+      const response = await axios.get("http://localhost:4000/api/v1/movies", {
+        headers: { Authorization: token },
+      });
       this.movies = response.data.result || [];
       this.loading = false;
     } catch (err) {
